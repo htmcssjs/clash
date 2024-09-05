@@ -75,10 +75,11 @@ p4:
   }
 p5: &a5 { type: http, behavior: domain, interval: 2592000 }
 p6: &a6 { type: http, behavior: classical, interval: 2592000 }
+p7: &a7 { type: http, behavior: ipcidr, interval: 2592000 }
 proxy-providers:
   Subscribe:
     <<: *a1
-    url: ""
+    url: "https://api.nexconvert.com/sub?target=clash&url=请手动填入你的订阅(多机场订阅用|分割即可)&emoji=true&list=true&new_name=true&udp=false"
     path: ./proxy_providers/tmp.yaml
 proxies: null
 proxy-groups:
@@ -99,6 +100,7 @@ proxy-groups:
     }
   - { name: 🚀 手动切换, <<: *a2 }
   - { name: ♻️ 自动选择, <<: *a4 }
+  - { name: 🆎 AdBlock, type: select, proxies: [REJECT] }
   - { name: 🤖 OpenAi, type: select, proxies: [🇺🇸 美国节点] }
   - {
       name: 📺 哔哩哔哩,
@@ -112,7 +114,6 @@ proxy-groups:
   - { name: 📟 电报消息, <<: *a3 }
   - { name: 🐦 推特服务, <<: *a3 }
   - { name: 🎮 游戏平台, <<: *a3 }
-  - { name: 🆎 AdBlock, type: select, proxies: [REJECT] }
   - { name: 🐟 兜底分流, <<: *a3 }
   - { name: 🇭🇰 香港节点, <<: *a4, filter: "港|HK|(?i)Hong" }
   - { name: 🇹🇼 台湾节点, <<: *a4, filter: "台|湾|TW|(?i)Taiwan" }
@@ -137,6 +138,12 @@ rule-providers:
       <<: *a6,
       url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Download/Download.yaml,
       path: ./ruleset/Download.yaml,
+    }
+  Ad:
+    {
+      <<: *a5,
+      url: https://anti-ad.net/clash.yaml,
+      path: ./ruleset/anti-ad-clash.yaml,
     }
   OpenAi:
     {
@@ -210,15 +217,9 @@ rule-providers:
       url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/ProxyLite/ProxyLite.yaml,
       path: ./ruleset/ProxyLite.yaml,
     }
-  Ad:
-    {
-      <<: *a5,
-      url: https://anti-ad.net/clash.yaml,
-      path: ./ruleset/anti-ad-clash.yaml,
-    }
   ChinaIP:
     {
-      <<: *a6,
+      <<: *a7,
       url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/ChinaMax/ChinaMax_Classical.yaml,
       path: ./ruleset/ChinaIP.yaml,
     }
@@ -226,6 +227,7 @@ rules:
   - RULE-SET,Direct,DIRECT
   - RULE-SET,Lan,DIRECT
   - RULE-SET,Download,DIRECT
+  - RULE-SET,Ad,🆎 AdBlock
   - RULE-SET,OpenAi,🤖 OpenAi
   - RULE-SET,BiliBili,📺 哔哩哔哩
   - RULE-SET,Bahamut,📺 哔哩哔哩
@@ -238,7 +240,6 @@ rules:
   - RULE-SET,Twitter,🌏 全球加速
   - RULE-SET,Game,🎮 游戏平台
   - RULE-SET,ProxyLite,🌏 全球加速
-  - RULE-SET,Ad,🆎 AdBlock
   - RULE-SET,ChinaIP,DIRECT
   - GEOIP,CN,DIRECT
   - MATCH,🐟 兜底分流
