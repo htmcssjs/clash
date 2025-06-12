@@ -81,7 +81,7 @@ proxy-providers:
     <<: *a1
     url: "https://api.nexconvert.com/sub?target=clash&url=请手动填入你的订阅(多机场订阅用|分割即可)&emoji=true&list=true&new_name=true&udp=false"
     path: ./proxy_providers/tmp.yaml
-proxies: null
+proxies: []
 proxy-groups:
   - {
       name: 🛸 节点选择,
