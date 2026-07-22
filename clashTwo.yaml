@@ -109,9 +109,9 @@ proxy-groups:
   - { name: 🚀 手动切换, <<: *a2 }
   - { name: ♻️ 自动选择, <<: *a4 }
   - { name: 🆎 AdBlock, type: select, proxies: [REJECT] }
-  - { name: 🤖 OpenAi, type: select, proxies: [🇺🇸 美国节点] }
-  - { name: 🤖 Gemini, type: select, proxies: [🇺🇸 美国节点] }
-  - { name: 🤖 Claude, type: select, proxies: [🇺🇸 美国节点] }
+  - { name: 🤖 OpenAi, type: select, proxies: [🇯🇵 日本节点, 🇸🇬 狮城节点, 🇺🇸 美国节点, 🇩🇪 德国节点, 🇫🇷 法国节点] }
+  - { name: 🤖 Gemini, type: select, proxies: [🇯🇵 日本节点, 🇸🇬 狮城节点, 🇺🇸 美国节点, 🇩🇪 德国节点, 🇫🇷 法国节点] }
+  - { name: 🤖 Claude, type: select, proxies: [🇯🇵 日本节点, 🇸🇬 狮城节点, 🇺🇸 美国节点, 🇩🇪 德国节点, 🇫🇷 法国节点] }
   - {
       name: 📺 哔哩哔哩,
       type: select,
