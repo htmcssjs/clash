@@ -28,6 +28,11 @@ dns:
     - "*.battlenet.com"
     - "*.blzstatic.cn"
     - "*.battle.net"
+    - "+.trycloudflare.com"
+    - "+.argotunnel.com"
+    - "+.tailscale.com"
+    - "+.tailscale.io"
+    - controlplane.tailscale.com
   nameserver:
     - 223.5.5.5
     - 119.29.29.29
@@ -248,6 +253,15 @@ rule-providers:
       path: ./ruleset/ChinaIP.yaml,
     }
 rules:
+  - PROCESS-NAME,cloudflared.exe,DIRECT
+  - PROCESS-NAME,tailscaled.exe,DIRECT
+  - PROCESS-NAME,tailscale.exe,DIRECT
+  - PROCESS-NAME,tailscale-ipn.exe,DIRECT
+  - DOMAIN-SUFFIX,trycloudflare.com,DIRECT
+  - DOMAIN-SUFFIX,argotunnel.com,DIRECT
+  - DOMAIN-SUFFIX,tailscale.com,DIRECT
+  - DOMAIN-SUFFIX,tailscale.io,DIRECT
+  - DOMAIN,controlplane.tailscale.com,DIRECT
   - RULE-SET,Direct,DIRECT
   - RULE-SET,Lan,DIRECT
   - RULE-SET,Download,DIRECT
@@ -260,7 +274,7 @@ rules:
   - RULE-SET,GlobalMedia,🎬 国际媒体
   - RULE-SET,Apple,🍎 苹果服务
   - RULE-SET,Github,🌏 全球加速
-  - RULE-SET,Microsoft, 🌏 全球加速
+  - RULE-SET,Microsoft,🌏 全球加速
   - RULE-SET,Google,🌌 谷歌服务
   - RULE-SET,Telegram,📟 电报消息
   - RULE-SET,Twitter,🌏 全球加速
