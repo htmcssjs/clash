@@ -7,6 +7,13 @@ bind-address: "*"
 mode: rule
 log-level: info
 ipv6: false
+find-process-mode: always
+geox-url:
+  geoip: https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat
+  geosite: https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat
+  mmdb: https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country.mmdb
+geo-auto-update: true
+geo-update-interval: 24
 external-controller: 127.0.0.1:9090
 dns:
   enable: true
@@ -33,6 +40,9 @@ dns:
     - "+.tailscale.com"
     - "+.tailscale.io"
     - controlplane.tailscale.com
+  nameserver-policy:
+    "geosite:private": [223.5.5.5, 119.29.29.29]
+    "geosite:cn": [223.5.5.5, 119.29.29.29]
   nameserver:
     - 223.5.5.5
     - 119.29.29.29
@@ -48,7 +58,7 @@ dns:
 p1:
   &a1 {
     type: http,
-    interval: 2592000,
+    interval: 86400,
     health-check:
       { enable: true, url: http://www.gstatic.com/generate_204, interval: 300 },
   }
@@ -74,19 +84,19 @@ p3:
 p4:
   &a4 {
     type: url-test,
-    lazy: false,
+    lazy: true,
     url: http://www.gstatic.com/generate_204,
     interval: 300,
     tolerance: 50,
     use: [Subscribe],
   }
-p5: &a5 { type: http, behavior: domain, interval: 2592000 }
-p6: &a6 { type: http, behavior: classical, interval: 2592000 }
-p7: &a7 { type: http, behavior: ipcidr, interval: 2592000 }
+p5: &a5 { type: http, behavior: domain, interval: 86400 }
+p6: &a6 { type: http, behavior: classical, interval: 86400 }
+p7: &a7 { type: http, behavior: ipcidr, interval: 86400 }
 proxy-providers:
   Subscribe:
     <<: *a1
-    url: "https://api.nexconvert.com/sub?target=clash&url=请手动填入你的订阅(多机场订阅用|分割即可)&emoji=true&list=true&new_name=true&udp=false"
+    url: "请手动填入你的订阅"
     path: ./proxy_providers/tmp.yaml
 proxies: []
 proxy-groups:
@@ -110,9 +120,7 @@ proxy-groups:
   - { name: 🚀 手动切换, <<: *a2 }
   - { name: ♻️ 自动选择, <<: *a4 }
   - { name: 🆎 AdBlock, type: select, proxies: [REJECT] }
-  - { name: 🤖 OpenAi, type: select, proxies: [🇯🇵 日本节点, 🇸🇬 狮城节点, 🇺🇸 美国节点, 🇩🇪 德国节点, 🇫🇷 法国节点] }
-  - { name: 🤖 Gemini, type: select, proxies: [🇯🇵 日本节点, 🇸🇬 狮城节点, 🇺🇸 美国节点, 🇩🇪 德国节点, 🇫🇷 法国节点] }
-  - { name: 🤖 Claude, type: select, proxies: [🇯🇵 日本节点, 🇸🇬 狮城节点, 🇺🇸 美国节点, 🇩🇪 德国节点, 🇫🇷 法国节点] }
+  - { name: 🤖 AI, type: select, proxies: [🇯🇵 日本节点, 🇸🇬 狮城节点, 🇺🇸 美国节点, 🇩🇪 德国节点, 🇫🇷 法国节点] }
   - {
       name: 📺 哔哩哔哩,
       type: select,
@@ -158,23 +166,11 @@ rule-providers:
       url: https://anti-ad.net/clash.yaml,
       path: ./ruleset/anti-ad-clash.yaml,
     }
-  OpenAi:
+  AiGlobal:
     {
       <<: *a6,
-      url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OpenAI/OpenAI.yaml,
-      path: ./ruleset/OpenAi.yaml,
-    }
-  Gemini:
-    {
-      <<: *a6,
-      url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Gemini/Gemini.yaml,
-      path: ./ruleset/Gemini.yaml,
-    }
-  Claude:
-    {
-      <<: *a6,
-      url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Claude/Claude.yaml,
-      path: ./ruleset/Claude.yaml,
+      url: https://cdn.jsdelivr.net/gh/VPSDance/ai-proxy-rules@main/rules/clash/global.yaml,
+      path: ./ruleset/ai-global.yaml,
     }
   BiliBili:
     {
@@ -245,8 +241,8 @@ rule-providers:
   ChinaIP:
     {
       <<: *a7,
-      url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/ChinaMax/ChinaMax_Classical.yaml,
-      path: ./ruleset/ChinaIP.yaml,
+      url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt,
+      path: ./ruleset/ChinaIP.txt,
     }
 rules:
   - PROCESS-NAME,cloudflared.exe,DIRECT
@@ -262,9 +258,7 @@ rules:
   - RULE-SET,Lan,DIRECT
   - RULE-SET,Download,DIRECT
   - RULE-SET,Ad,🆎 AdBlock
-  - RULE-SET,OpenAi,🤖 OpenAi
-  - RULE-SET,Gemini,🤖 Gemini
-  - RULE-SET,Claude,🤖 Claude
+  - RULE-SET,AiGlobal,🤖 AI
   - RULE-SET,BiliBili,📺 哔哩哔哩
   - RULE-SET,Bahamut,📺 哔哩哔哩
   - RULE-SET,GlobalMedia,🎬 国际媒体
@@ -273,7 +267,7 @@ rules:
   - RULE-SET,Microsoft,🌏 全球加速
   - RULE-SET,Google,🌌 谷歌服务
   - RULE-SET,Telegram,📟 电报消息
-  - RULE-SET,Twitter,🌏 全球加速
+  - RULE-SET,Twitter,🐦 推特服务
   - RULE-SET,Game,🎮 游戏平台
   - RULE-SET,ProxyLite,🌏 全球加速
   - RULE-SET,ChinaIP,DIRECT
