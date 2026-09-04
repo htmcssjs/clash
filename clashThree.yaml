@@ -260,7 +260,6 @@ rules:
   - DOMAIN-SUFFIX,argotunnel.com,DIRECT
   - DOMAIN-SUFFIX,tailscale.com,DIRECT
   - DOMAIN-SUFFIX,tailscale.io,DIRECT
-  - DOMAIN,controlplane.tailscale.com,DIRECT
   - RULE-SET,Direct,DIRECT
   - RULE-SET,Lan,DIRECT
   - RULE-SET,Download,DIRECT
