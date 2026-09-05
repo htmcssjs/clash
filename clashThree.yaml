@@ -164,7 +164,6 @@ rule-providers:
       url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Direct/Direct.yaml,
       path: ./ruleset/Direct.yaml,
     }
-  # Lan.yaml 含 198.18.0.0/15，与 fake-ip 冲突，会导致谷歌等全走 DIRECT；改用下方本地私网规则
   Download:
     {
       <<: *a6,
@@ -259,7 +258,6 @@ rules:
   - DOMAIN-SUFFIX,tailscale.com,DIRECT
   - DOMAIN-SUFFIX,tailscale.io,DIRECT
   - RULE-SET,Direct,DIRECT
-  # 勿用含 198.18.0.0/15 的 Lan RULE-SET（会吃掉全部 fake-ip）
   - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
   - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
   - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
