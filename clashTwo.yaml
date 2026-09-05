@@ -48,6 +48,9 @@ dns:
     "geosite:cn":
       - https://223.5.5.5/dns-query
       - https://120.53.53.53/dns-query
+    "geosite:gfw":
+      - https://1.1.1.1/dns-query
+      - https://8.8.8.8/dns-query
   nameserver:
     - https://223.5.5.5/dns-query
     - https://120.53.53.53/dns-query
@@ -57,8 +60,6 @@ dns:
   fallback-filter:
     geoip: true
     geoip-code: CN
-    geosite:
-      - gfw
     ipcidr:
       - 240.0.0.0/4
   proxy-server-nameserver:
