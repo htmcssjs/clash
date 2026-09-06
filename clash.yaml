@@ -165,7 +165,7 @@ rule-providers:
   Ad:
     {
       <<: *a5,
-      url: https://anti-ad.net/clash.yaml,
+      url: https://cdn.jsdelivr.net/gh/privacy-protection-tools/anti-AD@master/anti-ad-clash.yaml,
       path: ./ruleset/anti-ad-clash.yaml,
     }
   AiGlobal:
